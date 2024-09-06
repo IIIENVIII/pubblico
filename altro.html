@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Voti</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+        .form-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        select, input[type="date"], input[type="number"], button {
+            padding: 10px;
+            font-size: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+        .delete-btn {
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Registro Voti</h1>
+
+    <div class="form-container">
+        <label for="name">Nome e Cognome:</label>
+        <select id="name">
+            <option value="">-- Seleziona Nome e Cognome --</option>
+            <option value="Stellina Dematteis">Stellina Dematteis</option>
+            <option value="Tartaruga Benua">Tartaruga Benua</option>
+            <option value="Yucky Benua">Yucky Benua</option>
+            <option value="Lollo Benua">Lollo Benua</option>
+            <option value="Briciola Dematteis">Briciola Dematteis</option>
+            <option value="Leondard Benua">Leondard Benua</option>
+            <option value="Sparcky Benua">Sparcky Benua</option>
+            <option value="Flaffy Dematteis">Flaffy Dematteis</option>
+            <option value="Tina Dematteis">Tina Dematteis</option>
+            <option value="Grigetta Benua">Grigetta Benua</option>
+            <option value="Luna Dematteis">Luna Dematteis</option>
+            <option value="Luna Benua">Luna Benua</option>
+            <option value="Kendy Dematteis">Kendy Dematteis</option>
+            <option value="Papero Benua">Papero Benua</option>
+            <option value="Attiglio Dematteis">Attiglio Dematteis</option>
+            <option value="Sunny Benua">Sunny Benua</option>
+            <option value="Curt Dematteis">Curt Dematteis</option>
+            <option value="Lampo Benua">Lampo Benua</option>
+        </select>
+
+        <label for="date">Data:</label>
+        <input type="date" id="date">
+
+        <label for="subject">Materia:</label>
+        <select id="subject">
+            <option value="">-- Seleziona Materia --</option>
+            <option value="Italiano">Italiano</option>
+            <option value="Matematica">Matematica</option>
+            <option value="Scienze">Scienze</option>
+            <option value="Geografia">Geografia</option>
+            <option value="Informatica">Informatica</option>
+            <option value="Arte">Arte</option>
+            <option value="Tecnologia">Tecnologia</option>
+            <option value="Disegno">Disegno</option>
+            <option value="Musica">Musica</option>
+			            <option value="S">Storia</option>
+        </select>
+
+        <label for="grade">Voto:</label>
+        <input type="number" id="grade" min="1" max="10" placeholder="Voto">
+
+        <button onclick="addRecord()">Conferma</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome e Cognome</th>
+                <th>Data</th>
+                <th>Materia</th>
+                <th>Voto</th>
+                <th>Cancella</th>
+            </tr>
+        </thead>
+        <tbody id="recordsTable">
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadRecords);
+
+        function addRecord() {
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            const subject = document.getElementById('subject').value;
+            const grade = document.getElementById('grade').value;
+
+            if (name && date && subject && grade) {
+                const record = { name, date, subject, grade };
+                addToTable(record);
+                saveRecord(record);
+            } else {
+                alert("Per favore, compila tutti i campi.");
+            }
+        }
+
+        function addToTable(record) {
+            const table = document.getElementById('recordsTable');
+            const row = table.insertRow();
+            row.insertCell(0).innerText = record.name;
+            row.insertCell(1).innerText = record.date;
+            row.insertCell(2).innerText = record.subject;
+            row.insertCell(3).innerText = record.grade;
+
+            const deleteCell = row.insertCell(4);
+            const deleteBtn = document.createElement("span");
+            deleteBtn.innerText = "X";
+            deleteBtn.classList.add("delete-btn");
+            deleteBtn.onclick = () => {
+                row.remove();
+                deleteRecord(record);
+            };
+            deleteCell.appendChild(deleteBtn);
+        }
+
+        function saveRecord(record) {
+            let records = JSON.parse(localStorage.getItem('records')) || [];
+            records.push(record);
+            localStorage.setItem('records', JSON.stringify(records));
+        }
+
+        function loadRecords() {
+            const records = JSON.parse(localStorage.getItem('records')) || [];
+            records.forEach(record => addToTable(record));
+        }
+
+        function deleteRecord(recordToDelete) {
+            let records = JSON.parse(localStorage.getItem('records')) || [];
+            records = records.filter(record => record.name !== recordToDelete.name || 
+                                               record.date !== recordToDelete.date ||
+                                               record.subject !== recordToDelete.subject || 
+                                               record.grade !== recordToDelete.grade);
+            localStorage.setItem('records', JSON.stringify(records));
+        }
+    </script>
+
+</body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
+
+<script>
+    // Configura il tuo progetto Firebase qui
+    const firebaseConfig = {
+        apiKey: "TUA_API_KEY",
+        authDomain: "TUA_AUTH_DOMAIN",
+        databaseURL: "TUA_DATABASE_URL",
+        projectId: "TUA_PROJECT_ID",
+        storageBucket: "TUA_STORAGE_BUCKET",
+        messagingSenderId: "TUA_MESSAGING_SENDER_ID",
+        appId: "TUA_APP_ID"
+    };
+
+    // Inizializza Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+</script>
