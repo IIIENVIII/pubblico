@@ -39,26 +39,9 @@
         .delete-btn:hover {
             color: darkred;
         }
-        /* Pulsante Salva in alto a sinistra */
-        #save-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px 20px;
-            font-size: 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        #save-btn:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
-
-    <button id="save-btn" onclick="saveToFirebase()">Salva</button>
 
     <h1>Registro Voti</h1>
 
@@ -68,7 +51,6 @@
             <option value="">-- Seleziona Nome e Cognome --</option>
             <option value="Stellina Dematteis">Stellina Dematteis</option>
             <option value="Tartaruga Benua">Tartaruga Benua</option>
-            <option value="Yucky Benua">Yucky Benua</option>
             <option value="Yucky Benua">Yucky Benua</option>
             <option value="Lollo Benua">Lollo Benua</option>
             <option value="Briciola Dematteis">Briciola Dematteis</option>
@@ -85,7 +67,6 @@
             <option value="Sunny Benua">Sunny Benua</option>
             <option value="Curt Dematteis">Curt Dematteis</option>
             <option value="Lampo Benua">Lampo Benua</option>
-            <!-- Aggiungere altri nomi qui -->
         </select>
 
         <label for="date">Data:</label>
@@ -103,9 +84,7 @@
             <option value="Tecnologia">Tecnologia</option>
             <option value="Disegno">Disegno</option>
             <option value="Musica">Musica</option>
-	    <option value="S">Storia</option>
-	    <option value="S">Ginnastica</option>
-            <!-- Aggiungere altre materie qui -->
+			            <option value="S">Storia</option>
         </select>
 
         <label for="grade">Voto:</label>
@@ -128,26 +107,8 @@
         </tbody>
     </table>
 
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
-
     <script>
-        // Configura il tuo progetto Firebase qui
-        const firebaseConfig = {
-            apiKey: "TUA_API_KEY",
-            authDomain: "TUA_AUTH_DOMAIN",
-            databaseURL: "TUA_DATABASE_URL",
-            projectId: "TUA_PROJECT_ID",
-            storageBucket: "TUA_STORAGE_BUCKET",
-            messagingSenderId: "TUA_MESSAGING_SENDER_ID",
-            appId: "TUA_APP_ID"
-        };
-
-        // Inizializza Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        document.addEventListener("DOMContentLoaded", loadFromFirebase);
+        document.addEventListener("DOMContentLoaded", loadRecords);
 
         function addRecord() {
             const name = document.getElementById('name').value;
@@ -158,6 +119,7 @@
             if (name && date && subject && grade) {
                 const record = { name, date, subject, grade };
                 addToTable(record);
+                saveRecord(record);
             } else {
                 alert("Per favore, compila tutti i campi.");
             }
@@ -177,47 +139,50 @@
             deleteBtn.classList.add("delete-btn");
             deleteBtn.onclick = () => {
                 row.remove();
+                deleteRecord(record);
             };
             deleteCell.appendChild(deleteBtn);
         }
 
-        // Funzione per salvare i voti in Firebase
-        function saveToFirebase() {
-            const records = [];
-            const rows = document.querySelectorAll('#recordsTable tr');
-            
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells.length > 0) {
-                    const record = {
-                        name: cells[0].innerText,
-                        date: cells[1].innerText,
-                        subject: cells[2].innerText,
-                        grade: cells[3].innerText
-                    };
-                    records.push(record);
-                }
-            });
-
-            if (records.length > 0) {
-                db.ref('records').set(records)
-                    .then(() => alert('Voti salvati con successo!'))
-                    .catch(error => alert('Errore nel salvataggio: ' + error.message));
-            } else {
-                alert('Non ci sono voti da salvare.');
-            }
+        function saveRecord(record) {
+            let records = JSON.parse(localStorage.getItem('records')) || [];
+            records.push(record);
+            localStorage.setItem('records', JSON.stringify(records));
         }
 
-        // Funzione per caricare i voti da Firebase
-        function loadFromFirebase() {
-            db.ref('records').once('value', snapshot => {
-                const records = snapshot.val();
-                if (records) {
-                    records.forEach(record => addToTable(record));
-                }
-            }).catch(error => alert('Errore nel caricamento: ' + error.message));
+        function loadRecords() {
+            const records = JSON.parse(localStorage.getItem('records')) || [];
+            records.forEach(record => addToTable(record));
+        }
+
+        function deleteRecord(recordToDelete) {
+            let records = JSON.parse(localStorage.getItem('records')) || [];
+            records = records.filter(record => record.name !== recordToDelete.name || 
+                                               record.date !== recordToDelete.date ||
+                                               record.subject !== recordToDelete.subject || 
+                                               record.grade !== recordToDelete.grade);
+            localStorage.setItem('records', JSON.stringify(records));
         }
     </script>
 
 </body>
 </html>
+<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
+
+<script>
+    // Configura il tuo progetto Firebase qui
+    const firebaseConfig = {
+        apiKey: "TUA_API_KEY",
+        authDomain: "TUA_AUTH_DOMAIN",
+        databaseURL: "TUA_DATABASE_URL",
+        projectId: "TUA_PROJECT_ID",
+        storageBucket: "TUA_STORAGE_BUCKET",
+        messagingSenderId: "TUA_MESSAGING_SENDER_ID",
+        appId: "TUA_APP_ID"
+    };
+
+    // Inizializza Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+</script>
