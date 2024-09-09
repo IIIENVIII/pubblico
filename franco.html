@@ -35,11 +35,28 @@
             text-decoration: underline;
             cursor: pointer;
         }
+        .centered-link {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .centered-link a {
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .centered-link a:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <h1>Registro Elettronico</h1>
 
+    <!-- Form per aggiungere voti e ritardi -->
     <div class="form-group">
         <label for="student-name">Nome Studente:</label>
         <input type="text" id="student-name">
@@ -56,6 +73,7 @@
         <button onclick="addLate()">Aggiungi Ritardo</button>
     </div>
 
+    <!-- Tabella degli studenti -->
     <table id="attendance-table">
         <thead>
             <tr>
@@ -69,6 +87,8 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Aggiungi qui le righe della tabella -->
+            <!-- Esempio di riga -->
             <tr>
                 <td>Stellina Dematteis</td>
                 <td><input type="radio" name="attendance1" value="Presente" onclick="updateAttendance('Stellina Dematteis', false, false)"></td>
@@ -78,7 +98,7 @@
                 <td id="late-Stellina Dematteis">0</td>
                 <td><a class="link-verifiche" href="altro.html?student=Stellina%20Dematteis">Dettagli Verifiche</a></td>
             </tr>
-            <tr>
+		            <tr>
                 <td>Tartaruga Benua</td>
                 <td><input type="radio" name="attendance2" value="Presente" onclick="updateAttendance('Tartaruga Benua', false, false)"></td>
                 <td><input type="radio" name="attendance2" value="Assente" onclick="updateAttendance('Tartaruga Benua', true, false)"></td>
@@ -217,12 +237,17 @@
                 <td id="absence-Lucia Bianchi">0</td>
                 <td id="late-Lucia Bianchi">0</td>
             </tr>
-            <!-- Aggiungi qui tutti gli altri studenti con la colonna verifiche e voti -->
+            <!-- Altre righe qui -->
         </tbody>
     </table>
 
     <h2>Voti</h2>
     <ul id="grades-list"></ul>
+
+    <!-- Link centrato -->
+    <div class="centered-link">
+        <a href="altro.html">Vai a Altro.html</a>
+    </div>
 
     <script>
         // Aggiungi voto
@@ -286,39 +311,3 @@
     </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Centrare</title>
-    <style>
-        body {
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-        a {
-            text-decoration: none;
-            color: white;
-            background-color: #007BFF;
-            padding: 15px 25px;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-        a:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-
-    <a href="altro.html">Vai a Altro.html</a>
-
-</body>
-</html>
-
