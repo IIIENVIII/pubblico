@@ -30,6 +30,11 @@
         .form-group label {
             margin-right: 10px;
         }
+        .link-verifiche {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -60,6 +65,7 @@
                 <th>Ritardo</th>
                 <th>Assenze Totali</th>
                 <th>Ritardi Totali</th>
+                <th>Verifiche e Voti</th>
             </tr>
         </thead>
         <tbody>
@@ -70,6 +76,7 @@
                 <td><input type="radio" name="attendance1" value="Ritardo" onclick="updateAttendance('Stellina Dematteis', false, true)"></td>
                 <td id="absence-Stellina Dematteis">0</td>
                 <td id="late-Stellina Dematteis">0</td>
+                <td><a class="link-verifiche" href="altro.html?student=Stellina%20Dematteis">Dettagli Verifiche</a></td>
             </tr>
             <tr>
                 <td>Tartaruga Benua</td>
@@ -78,6 +85,7 @@
                 <td><input type="radio" name="attendance2" value="Ritardo" onclick="updateAttendance('Tartaruga Benua', false, true)"></td>
                 <td id="absence-Tartaruga Benua">0</td>
                 <td id="late-Tartaruga Benua">0</td>
+                <td><a class="link-verifiche" href="altro.html?student=Tartaruga%20Benua">Dettagli Verifiche</a></td>
             </tr>
             <tr>
                 <td>Yucky Benua</td>
@@ -86,7 +94,9 @@
                 <td><input type="radio" name="attendance3" value="Ritardo" onclick="updateAttendance('Yucky Benua', false, true)"></td>
                 <td id="absence-Yucky Benua">0</td>
                 <td id="late-Yucky Benua">0</td>
+                <td><a class="link-verifiche" href="altro.html?student=Yucky%20Benua">Dettagli Verifiche</a></td>
             </tr>
+            <!-- Aggiungi gli altri studenti con lo stesso schema -->
             <tr>
                 <td>Lollo Benua</td>
                 <td><input type="radio" name="attendance4" value="Presente" onclick="updateAttendance('Lollo Benua', false, false)"></td>
@@ -94,8 +104,9 @@
                 <td><input type="radio" name="attendance4" value="Ritardo" onclick="updateAttendance('Lollo Benua', false, true)"></td>
                 <td id="absence-Lollo Benua">0</td>
                 <td id="late-Lollo Benua">0</td>
+                <td><a class="link-verifiche" href="altro.html?student=Lollo%20Benua">Dettagli Verifiche</a></td>
             </tr>
-            <tr>
+		 <tr>
                 <td>Briciola Dematteis</td>
                 <td><input type="radio" name="attendance5" value="Presente" onclick="updateAttendance('Briciola Dematteis', false, false)"></td>
                 <td><input type="radio" name="attendance5" value="Assente" onclick="updateAttendance('Briciola Dematteis', true, false)"></td>
@@ -206,6 +217,7 @@
                 <td id="absence-Lucia Bianchi">0</td>
                 <td id="late-Lucia Bianchi">0</td>
             </tr>
+            <!-- Aggiungi qui tutti gli altri studenti con la colonna verifiche e voti -->
         </tbody>
     </table>
 
@@ -271,28 +283,6 @@
             attendance[studentName] = { absences, lates };
             localStorage.setItem("attendance", JSON.stringify(attendance));
         }
-
-        // Carica dati dal localStorage al caricamento della pagina
-        window.onload = function () {
-            const savedGrades = JSON.parse(localStorage.getItem("grades")) || [];
-            const gradesList = document.getElementById("grades-list");
-            savedGrades.forEach(grade => {
-                const newGrade = document.createElement("li");
-                newGrade.textContent = `${grade.studentName} ha preso ${grade.grade} in ${grade.subject}`;
-                gradesList.appendChild(newGrade);
-            });
-
-            const savedAttendance = JSON.parse(localStorage.getItem("attendance")) || {};
-            for (let studentName in savedAttendance) {
-                const absences = savedAttendance[studentName].absences;
-                const lates = savedAttendance[studentName].lates;
-
-                document.getElementById(`absence-${studentName}`).textContent = absences;
-                document.getElementById(`late-${studentName}`).textContent = lates;
-            }
-        };
-	    <a href="altro.html" class="bottom-right-link">Verifiche e Voti</a>
-
     </script>
 </body>
 </html>
