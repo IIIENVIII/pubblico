@@ -8,6 +8,23 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        .home-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            font-size: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-decoration: none;
+            color: black;
+        }
+        .home-btn:hover {
+            background-color: #e0e0e0;
         }
         .form-container {
             display: flex;
@@ -43,6 +60,8 @@
 </head>
 <body>
 
+    <a href="franco.html" class="home-btn">Home</a>
+
     <h1>Registro Voti</h1>
 
     <div class="form-container">
@@ -67,15 +86,15 @@
             <option value="Sunny Benua">Sunny Benua</option>
             <option value="Curt Dematteis">Curt Dematteis</option>
             <option value="Lampo Benua">Lampo Benua</option>
-	    <option value="Cane Dematteis">Cane Dematteis</option>
-	    <option value="Cane Benua">Cane Benua</option>
-	<option value="Mician Dematteis">Mician Dematteis</option>
-		<option value="Cicciobello Pastelli">Cicciobello Pastelli</option>
-		<option value="Lampo Benua">Cattivo Pastelli</option>
-		<option value="Michael Ciliegini">Michael Ciliegini</option>
-		<option value="Bambola Zuccherini">Bambola >Zuccherini</option>
-		<option value="Teschio Rossetti">Teschio Rossetti</option>
-	  <option value="Robottina Rossetti">Robottina Rossetti</option>
+            <option value="Cane Dematteis">Cane Dematteis</option>
+            <option value="Cane Benua">Cane Benua</option>
+            <option value="Mician Dematteis">Mician Dematteis</option>
+            <option value="Cicciobello Pastelli">Cicciobello Pastelli</option>
+            <option value="Lampo Benua">Cattivo Pastelli</option>
+            <option value="Michael Ciliegini">Michael Ciliegini</option>
+            <option value="Bambola Zuccherini">Bambola Zuccherini</option>
+            <option value="Teschio Rossetti">Teschio Rossetti</option>
+            <option value="Robottina Rossetti">Robottina Rossetti</option>
         </select>
 
         <label for="date">Data:</label>
@@ -93,7 +112,7 @@
             <option value="Tecnologia">Tecnologia</option>
             <option value="Disegno">Disegno</option>
             <option value="Musica">Musica</option>
-			            <option value="S">Storia</option>
+            <option value="Storia">Storia</option>
         </select>
 
         <label for="grade">Voto:</label>
@@ -174,24 +193,25 @@
         }
     </script>
 
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
+
+    <script>
+        // Configura il tuo progetto Firebase qui
+        const firebaseConfig = {
+            apiKey: "TUA_API_KEY",
+            authDomain: "TUA_AUTH_DOMAIN",
+            databaseURL: "TUA_DATABASE_URL",
+            projectId: "TUA_PROJECT_ID",
+            storageBucket: "TUA_STORAGE_BUCKET",
+            messagingSenderId: "TUA_MESSAGING_SENDER_ID",
+            appId: "TUA_APP_ID"
+        };
+
+        // Inizializza Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+    </script>
+
 </body>
 </html>
-<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
-
-<script>
-    // Configura il tuo progetto Firebase qui
-    const firebaseConfig = {
-        apiKey: "TUA_API_KEY",
-        authDomain: "TUA_AUTH_DOMAIN",
-        databaseURL: "TUA_DATABASE_URL",
-        projectId: "TUA_PROJECT_ID",
-        storageBucket: "TUA_STORAGE_BUCKET",
-        messagingSenderId: "TUA_MESSAGING_SENDER_ID",
-        appId: "TUA_APP_ID"
-    };
-
-    // Inizializza Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-</script>
