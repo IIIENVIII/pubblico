@@ -143,8 +143,7 @@
                 <td id="absence-Grigetta Benua">0</td>
                 <td id="late-Grigetta Benua">0</td>
             </tr>
-			<tr>
-                <td>Luna Dematteis</td>
+		<td>Luna Dematteis</td>
                 <td><input type="radio" name="attendance11" value="Presente" onclick="updateAttendance('Luna Dematteis', false, false)"></td>
                 <td><input type="radio" name="attendance11" value="Assente" onclick="updateAttendance('Luna Dematteis', true, false)"></td>
                 <td><input type="radio" name="attendance11" value="Ritardo" onclick="updateAttendance('Luna Dematteis', false, true)"></td>
@@ -210,91 +209,88 @@
         </tbody>
     </table>
 
-    <table id="grades-table">
-        <thead>
-            <tr>
-                <th>Nome Studente</th>
-                <th>Materia</th>
-                <th>Voto</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Voti degli studenti verranno aggiunti qui -->
-        </tbody>
-    </table>
+    <h2>Voti</h2>
+    <ul id="grades-list"></ul>
 
     <script>
-        const attendanceData = {};
+        // Aggiungi voto
+        function addGrade() {
+            const studentName = document.getElementById("student-name").value;
+            const subject = document.getElementById("subject").value;
+            const grade = document.getElementById("student-grade").value;
 
-        function updateAttendance(studentName, isAbsent, isLate) {
-            if (!attendanceData[studentName]) {
-                attendanceData[studentName] = { absences: 0, lates: 0 };
+            if (studentName && subject && grade) {
+                const gradesList = document.getElementById("grades-list");
+                const newGrade = document.createElement("li");
+                newGrade.textContent = `${studentName} ha preso ${grade} in ${subject}`;
+                gradesList.appendChild(newGrade);
+
+                // Salva nel localStorage
+                saveGrade(studentName, subject, grade);
             }
+        }
+
+        // Aggiungi ritardo
+        function addLate() {
+            const studentName = document.getElementById("late-student-name").value;
+            if (studentName) {
+                updateAttendance(studentName, false, true);
+            }
+        }
+
+        // Aggiorna presenza/assenza/ritardo
+        function updateAttendance(studentName, isAbsent, isLate) {
+            const absenceCell = document.getElementById(`absence-${studentName}`);
+            const lateCell = document.getElementById(`late-${studentName}`);
+
+            let absences = parseInt(absenceCell.textContent);
+            let lates = parseInt(lateCell.textContent);
 
             if (isAbsent) {
-                attendanceData[studentName].absences++;
-                document.getElementById(`absence-${studentName}`).textContent = attendanceData[studentName].absences;
+                absences++;
+                absenceCell.textContent = absences;
             } else if (isLate) {
-                attendanceData[studentName].lates++;
-                document.getElementById(`late-${studentName}`).textContent = attendanceData[studentName].lates;
+                lates++;
+                lateCell.textContent = lates;
             }
+
+            // Salva nel localStorage
+            saveAttendance(studentName, absences, lates);
         }
 
-        function addGrade() {
-            const name = document.getElementById('student-name').value;
-            const subject = document.getElementById('subject').value;
-            const grade = document.getElementById('student-grade').value;
-
-            if (name && subject && grade) {
-                const gradeTable = document.getElementById('grades-table').getElementsByTagName('tbody')[0];
-                const newRow = gradeTable.insertRow();
-                const cell1 = newRow.insertCell(0);
-                const cell2 = newRow.insertCell(1);
-                const cell3 = newRow.insertCell(2);
-
-                cell1.textContent = name;
-                cell2.textContent = subject;
-                cell3.textContent = grade;
-            }
+        // Salva voto nel localStorage
+        function saveGrade(studentName, subject, grade) {
+            const grades = JSON.parse(localStorage.getItem("grades")) || [];
+            grades.push({ studentName, subject, grade });
+            localStorage.setItem("grades", JSON.stringify(grades));
         }
 
-        function addLate() {
-            const name = document.getElementById('late-student-name').value;
-            if (name) {
-                updateAttendance(name, false, true);
-            }
+        // Salva assenze e ritardi nel localStorage
+        function saveAttendance(studentName, absences, lates) {
+            const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+            attendance[studentName] = { absences, lates };
+            localStorage.setItem("attendance", JSON.stringify(attendance));
         }
+
+        // Carica dati dal localStorage al caricamento della pagina
+        window.onload = function () {
+            const savedGrades = JSON.parse(localStorage.getItem("grades")) || [];
+            const gradesList = document.getElementById("grades-list");
+            savedGrades.forEach(grade => {
+                const newGrade = document.createElement("li");
+                newGrade.textContent = `${grade.studentName} ha preso ${grade.grade} in ${grade.subject}`;
+                gradesList.appendChild(newGrade);
+            });
+
+            const savedAttendance = JSON.parse(localStorage.getItem("attendance")) || {};
+            for (let studentName in savedAttendance) {
+                const absences = savedAttendance[studentName].absences;
+                const lates = savedAttendance[studentName].lates;
+
+                document.getElementById(`absence-${studentName}`).textContent = absences;
+                document.getElementById(`late-${studentName}`).textContent = lates;
+            }
+        };
     </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Principale</title>
-    <style>
-        .link-container {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-        }
-        .link-container a {
-            text-decoration: none;
-            color: #000;
-            background-color: #f0f0f0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .link-container a:hover {
-            background-color: #e0e0e0;
-        }
-    </style>
-</head>
-<body>
-    <div class="link-container">
-        <a href="altro.html">Interrogazioni e Verifiche</a>
-    </div>
 </body>
 </html>
