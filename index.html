@@ -9,8 +9,10 @@
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
 
-            if ((username === "enrico.dematteis" && password === "Iosonoenrico3") || 
-                (username === "alessia.dematteis" && password === "password")) {
+            if (username === "admin" && password === "password") {
+                window.location.href = "admin.html";
+            } else if ((username === "enrico.dematteis" && password === "Iosonoenrico3") || 
+                       (username === "alessia.dematteis" && password === "password")) {
                 window.location.href = "franco.html";
             } else {
                 alert("Nome utente o password non corretti");
