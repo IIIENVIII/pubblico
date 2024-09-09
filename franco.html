@@ -335,3 +335,41 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina con Local Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Salva il testo anche dopo l'aggiornamento</h1>
+    <textarea id="textInput" rows="10" cols="30" placeholder="Scrivi qualcosa..."></textarea>
+    <button id="saveButton">Salva</button>
+
+    <script>
+        // Recupera il testo salvato e lo mostra nel textarea
+        document.addEventListener('DOMContentLoaded', () => {
+            const textInput = document.getElementById('textInput');
+            const savedText = localStorage.getItem('savedText');
+            if (savedText) {
+                textInput.value = savedText;
+            }
+        });
+
+        // Salva il testo nel local storage quando il bottone è cliccato
+        document.getElementById('saveButton').addEventListener('click', () => {
+            const textInput = document.getElementById('textInput');
+            localStorage.setItem('savedText', textInput.value);
+            alert('Testo salvato!');
+        });
+    </script>
+</body>
+</html>
+
