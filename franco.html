@@ -98,6 +98,7 @@
                 <td id="late-Stellina Dematteis">0</td>
                 <td><a class="link-verifiche" href="altro.html?student=Stellina%20Dematteis">Dettagli Verifiche</a></td>
             </tr>
+		            </tr>
 		            <tr>
                 <td>Tartaruga Benua</td>
                 <td><input type="radio" name="attendance2" value="Presente" onclick="updateAttendance('Tartaruga Benua', false, false)"></td>
@@ -236,8 +237,8 @@
                 <td><input type="radio" name="attendance18" value="Ritardo" onclick="updateAttendance('Lampo Benua', false, true)"></td>
                 <td id="absence-Lucia Bianchi">0</td>
                 <td id="late-Lucia Bianchi">0</td>
-            </tr>
-            <!-- Altre righe qui -->
+            <!-- Altri studenti come sopra -->
+            <!-- Aggiungi le righe per tutti gli altri studenti -->
         </tbody>
     </table>
 
@@ -280,8 +281,8 @@
             const absenceCell = document.getElementById(`absence-${studentName}`);
             const lateCell = document.getElementById(`late-${studentName}`);
 
-            let absences = parseInt(absenceCell.textContent);
-            let lates = parseInt(lateCell.textContent);
+            let absences = parseInt(absenceCell.textContent) || 0;
+            let lates = parseInt(lateCell.textContent) || 0;
 
             if (isAbsent) {
                 absences++;
@@ -308,6 +309,29 @@
             attendance[studentName] = { absences, lates };
             localStorage.setItem("attendance", JSON.stringify(attendance));
         }
+
+        // Carica i dati salvati quando la pagina viene caricata
+        function loadSavedData() {
+            // Carica e visualizza i voti
+            const grades = JSON.parse(localStorage.getItem("grades")) || [];
+            const gradesList = document.getElementById("grades-list");
+            grades.forEach(gradeEntry => {
+                const newGrade = document.createElement("li");
+                newGrade.textContent = `${gradeEntry.studentName} ha preso ${gradeEntry.grade} in ${gradeEntry.subject}`;
+                gradesList.appendChild(newGrade);
+            });
+
+            // Carica e visualizza assenze e ritardi
+            const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+            Object.keys(attendance).forEach(studentName => {
+                const { absences, lates } = attendance[studentName];
+                document.getElementById(`absence-${studentName}`).textContent = absences;
+                document.getElementById(`late-${studentName}`).textContent = lates;
+            });
+        }
+
+        // Esegui il caricamento dei dati salvati all'inizio
+        window.onload = loadSavedData;
     </script>
 </body>
 </html>
