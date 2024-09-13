@@ -64,3 +64,106 @@
 
 </body>
 </html>
+
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicazioni</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .delete-btn {
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Materie Inserite</h1>
+
+<table id="materieTable">
+    <thead>
+        <tr>
+            <th>Materia</th>
+            <th>Data</th>
+            <th>Descrizione</th>
+            <th>Elimina</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Le righe verranno inserite qui -->
+    </tbody>
+</table>
+
+<p><a href="index.html">Torna alla pagina di inserimento</a></p>
+
+<script>
+    // Funzione per caricare i dati dal localStorage
+    function loadData() {
+        const data = localStorage.getItem('materie');
+        return data ? JSON.parse(data) : [];
+    }
+
+    // Funzione per salvare i dati nel localStorage
+    function saveData(materie) {
+        localStorage.setItem('materie', JSON.stringify(materie));
+    }
+
+    // Funzione per aggiornare la tabella
+    function updateTable() {
+        const tbody = document.querySelector('#materieTable tbody');
+        tbody.innerHTML = '';
+        const materie = loadData();
+
+        materie.forEach((materia, index) => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${materia.materia}</td>
+                <td>${materia.data}</td>
+                <td>${materia.descrizione}</td>
+                <td><span class="delete-btn" data-index="${index}">X</span></td>
+            `;
+
+            tbody.appendChild(row);
+        });
+
+        // Aggiungi evento per il bottone di eliminazione
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const index = this.getAttribute('data-index');
+                deleteMateria(index);
+            });
+        });
+    }
+
+    // Funzione per eliminare una materia
+    function deleteMateria(index) {
+        const materie = loadData();
+        materie.splice(index, 1);
+        saveData(materie);
+        updateTable();
+    }
+
+    // Carica i dati all'avvio della pagina
+    window.onload = function () {
+        updateTable();
+    };
+</script>
+
+</body>
+</html>
