@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Censure</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+        th, td {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Gestione delle Censure</h1>
+
+<form id="censureForm">
+    <label for="azione">Seleziona Azione:</label>
+    <select id="azione" required>
+        <option value="Censura">Censura</option>
+        <option value="Ammonizione">Ammonizione</option>
+        <option value="Sospensione">Sospensione</option>
+    </select><br><br>
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" required><br><br>
+
+    <label for="descrizione">Descrizione:</label><br>
+    <textarea id="descrizione" rows="4" cols="50" required></textarea><br><br>
+
+    <button type="submit">Salva</button>
+</form>
+
+<h2>Elenco delle Azioni</h2>
+<table id="tabellaCensure">
+    <thead>
+        <tr>
+            <th>Azione</th>
+            <th>Nome</th>
+            <th>Descrizione</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Le righe verranno aggiunte dinamicamente qui -->
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Carica i dati salvati da localStorage
+        const censureSalvate = JSON.parse(localStorage.getItem('censure')) || [];
+        const tabellaCensure = document.getElementById('tabellaCensure').getElementsByTagName('tbody')[0];
+
+        function aggiungiRiga(azione, nome, descrizione) {
+            const nuovaRiga = tabellaCensure.insertRow();
+            const cellaAzione = nuovaRiga.insertCell(0);
+            const cellaNome = nuovaRiga.insertCell(1);
+            const cellaDescrizione = nuovaRiga.insertCell(2);
+            cellaAzione.textContent = azione;
+            cellaNome.textContent = nome;
+            cellaDescrizione.textContent = descrizione;
+        }
+
+        // Mostra le censure salvate in tabella
+        censureSalvate.forEach(function(censura) {
+            aggiungiRiga(censura.azione, censura.nome, censura.descrizione);
+        });
+
+        // Aggiungi nuova censura e salva in localStorage
+        document.getElementById('censureForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const azione = document.getElementById('azione').value;
+            const nome = document.getElementById('nome').value;
+            const descrizione = document.getElementById('descrizione').value;
+
+            aggiungiRiga(azione, nome, descrizione);
+
+            // Salva la censura nel localStorage
+            censureSalvate.push({ azione, nome, descrizione });
+            localStorage.setItem('censure', JSON.stringify(censureSalvate));
+
+            // Resetta il form
+            document.getElementById('censureForm').reset();
+        });
+    });
+</script>
+
+<a href="censure.html">Vai a Censure</a>
+
+</body>
+</html>
