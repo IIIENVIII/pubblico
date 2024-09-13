@@ -13,6 +13,11 @@
         th, td {
             text-align: left;
         }
+        .delete-btn {
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +48,7 @@
             <th>Azione</th>
             <th>Nome</th>
             <th>Descrizione</th>
+            <th>Azioni</th>
         </tr>
     </thead>
     <tbody>
@@ -52,23 +58,33 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Carica i dati salvati da localStorage
         const censureSalvate = JSON.parse(localStorage.getItem('censure')) || [];
         const tabellaCensure = document.getElementById('tabellaCensure').getElementsByTagName('tbody')[0];
 
-        function aggiungiRiga(azione, nome, descrizione) {
+        function aggiungiRiga(azione, nome, descrizione, index) {
             const nuovaRiga = tabellaCensure.insertRow();
             const cellaAzione = nuovaRiga.insertCell(0);
             const cellaNome = nuovaRiga.insertCell(1);
             const cellaDescrizione = nuovaRiga.insertCell(2);
+            const cellaAzioni = nuovaRiga.insertCell(3);
+            
             cellaAzione.textContent = azione;
             cellaNome.textContent = nome;
             cellaDescrizione.textContent = descrizione;
+            
+            // Aggiungi il pulsante "X" per eliminare
+            const deleteBtn = document.createElement('span');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'X';
+            deleteBtn.addEventListener('click', function() {
+                eliminaRiga(index);
+            });
+            cellaAzioni.appendChild(deleteBtn);
         }
 
         // Mostra le censure salvate in tabella
-        censureSalvate.forEach(function(censura) {
-            aggiungiRiga(censura.azione, censura.nome, censura.descrizione);
+        censureSalvate.forEach(function(censura, index) {
+            aggiungiRiga(censura.azione, censura.nome, censura.descrizione, index);
         });
 
         // Aggiungi nuova censura e salva in localStorage
@@ -78,15 +94,33 @@
             const nome = document.getElementById('nome').value;
             const descrizione = document.getElementById('descrizione').value;
 
-            aggiungiRiga(azione, nome, descrizione);
+            // Aggiungi alla tabella
+            const newIndex = censureSalvate.length;
+            aggiungiRiga(azione, nome, descrizione, newIndex);
 
-            // Salva la censura nel localStorage
+            // Salva nel localStorage
             censureSalvate.push({ azione, nome, descrizione });
             localStorage.setItem('censure', JSON.stringify(censureSalvate));
 
             // Resetta il form
             document.getElementById('censureForm').reset();
         });
+
+        // Funzione per eliminare una riga
+        function eliminaRiga(index) {
+            // Rimuovi dalla tabella
+            tabellaCensure.deleteRow(index);
+
+            // Rimuovi dal localStorage
+            censureSalvate.splice(index, 1);
+            localStorage.setItem('censure', JSON.stringify(censureSalvate));
+
+            // Aggiorna la tabella per riflettere l'ordine corretto degli indici
+            tabellaCensure.innerHTML = '';
+            censureSalvate.forEach(function(censura, newIndex) {
+                aggiungiRiga(censura.azione, censura.nome, censura.descrizione, newIndex);
+            });
+        }
     });
 </script>
 
