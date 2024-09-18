@@ -42,21 +42,28 @@
     <div class="container">
         <h2>Compito di Matematica</h2>
 
-        <form action="admin.html" method="post">
-            <div class="task">
-                <label>1) (5 + 3) * [7 - (3 + 2)]</label>
-                <input type="number" name="answer1" required>
-            </div>
-
-            <div class="task">
-                <label>2) {12 / [2 + (3 * 4)]} + 5</label>
-                <input type="number" name="answer2" required>
-            </div>
-
-            <!-- Aggiungere altre espressioni -->
+        <form id="taskForm" action="admin.html" method="post">
+            <div id="tasks"></div>
 
             <button type="submit">Invia Compito</button>
         </form>
     </div>
-</body>
-</html>
+
+    <script>
+        function generateRandomExpression() {
+            const operators = ['+', '-', '*', '/'];
+            const parentheses = ['(', ')', '[', ']', '{', '}'];
+            
+            // Genera una semplice espressione casuale
+            const expr = `${parentheses[0]}${Math.floor(Math.random() * 10)} ${operators[Math.floor(Math.random() * operators.length)]} ${Math.floor(Math.random() * 10)}${parentheses[1]}`;
+            
+            return expr;
+        }
+
+        function generateTasksForUser(username) {
+            const taskContainer = document.getElementById('tasks');
+            
+            // Genera 10 espressioni diverse
+            for (let i = 1; i <= 10; i++) {
+                const taskDiv = document.createElement('div');
+               
