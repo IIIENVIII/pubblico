@@ -57,7 +57,7 @@
 <body>
     <div class="login-container">
         <h2>Login Studente</h2>
-        <form action="task.html" method="get">
+        <form id="loginForm" action="task.html" method="get">
             <label for="username">Nome Utente</label>
             <input type="text" id="username" name="username" placeholder="Nome utente" required>
 
@@ -67,5 +67,24 @@
             <button type="submit">Login</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Prendi il nome utente e la password inseriti
+            const username = document.getElementById('username').value.toLowerCase();
+            const password = document.getElementById('password').value;
+
+            // Verifica se la password è corretta
+            if (password === 'casa.2024') {
+                // Redirigi alla pagina del task con il nome utente come parametro
+                window.location.href = `task.html?username=${username}`;
+            } else {
+                alert('Password errata!');
+            }
+        });
+    </script>
 </body>
 </html>
+
