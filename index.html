@@ -17,7 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Studenti</title>
+    <title>Login Studenti e Admin</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,7 +56,7 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>Login Studente</h2>
+        <h2>Login Studente o Admin</h2>
         <form id="loginForm" action="task.html" method="get">
             <label for="username">Nome Utente</label>
             <input type="text" id="username" name="username" placeholder="Nome utente" required>
@@ -64,7 +64,7 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Password" required>
 
-            <button type="submit">Login</button>
+            <button type="submit">Accedi</button>
         </form>
     </div>
 
@@ -76,12 +76,17 @@
             const username = document.getElementById('username').value.toLowerCase();
             const password = document.getElementById('password').value;
 
-            // Verifica se la password è corretta
-            if (password === 'casa.2024') {
+            // Verifica se è l'admin
+            if (username === 'admin' && password === 'password') {
+                // Redirigi alla pagina admin
+                window.location.href = 'admin.html';
+            } 
+            // Verifica se è uno studente
+            else if (password === 'casa.2024') {
                 // Redirigi alla pagina del task con il nome utente come parametro
                 window.location.href = `task.html?username=${username}`;
             } else {
-                alert('Password errata!');
+                alert('Nome utente o password errati!');
             }
         });
     </script>
