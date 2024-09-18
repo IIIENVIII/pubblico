@@ -11,6 +11,7 @@
 </body>
 </html>
 
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -77,12 +78,12 @@
 
             // Verifica se è l'admin
             if (username === 'admin' && password === 'password') {
-                // Redirigi alla pagina admin
+                // Redirigi alla pagina admin.html per l'admin
                 window.location.href = 'admin.html';
             } 
             // Verifica se è uno studente
             else if (password === 'casa.2024') {
-                // Redirigi direttamente al compito specifico per lo studente
+                // Redirigi alla pagina task.html per gli studenti
                 window.location.href = `task.html?username=${username}`;
             } else {
                 alert('Nome utente o password errati!');
@@ -91,4 +92,3 @@
     </script>
 </body>
 </html>
-
