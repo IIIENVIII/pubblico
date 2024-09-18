@@ -3,32 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Studenti e Admin</title>
+    <title>Compito di Matematica</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #f2f2f2;
         }
-        .login-container {
-            background-color: white;
+        .container {
+            margin: 50px auto;
             padding: 20px;
+            background-color: white;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+        h2 {
+            text-align: center;
+        }
+        .task {
+            margin-bottom: 20px;
         }
         button {
-            width: 100%;
-            padding: 10px;
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -41,40 +39,31 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login Studente o Admin</h2>
-        <form id="loginForm" action="task.html" method="get">
-            <label for="username">Nome Utente</label>
-            <input type="text" id="username" name="username" placeholder="Nome utente" required>
+    <div class="container">
+        <h2>Compito di Matematica</h2>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Password" required>
+        <form id="taskForm" action="admin.html" method="post">
+            <div id="tasks"></div>
 
-            <button type="submit">Accedi</button>
+            <button type="submit">Invia Compito</button>
         </form>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function generateRandomExpression() {
+            const operators = ['+', '-', '*', '/'];
+            const parentheses = ['(', ')', '[', ']', '{', '}'];
+            
+            // Genera una semplice espressione casuale
+            const expr = `${parentheses[0]}${Math.floor(Math.random() * 10)} ${operators[Math.floor(Math.random() * operators.length)]} ${Math.floor(Math.random() * 10)}${parentheses[1]}`;
+            
+            return expr;
+        }
 
-            // Prendi il nome utente e la password inseriti
-            const username = document.getElementById('username').value.toLowerCase();
-            const password = document.getElementById('password').value;
-
-            // Verifica se è l'admin
-            if (username === 'admin' && password === 'password') {
-                // Redirigi alla pagina admin
-                window.location.href = 'admin.html';
-            } 
-            // Verifica se è uno studente
-            else if (password === 'casa.2024') {
-                // Redirigi alla pagina admin1.html con il nome utente come parametro
-                window.location.href = `admin1.html?username=${username}`;
-            } else {
-                alert('Nome utente o password errati!');
-            }
-        });
-    </script>
-</body>
-</html>
+        function generateTasksForUser(username) {
+            const taskContainer = document.getElementById('tasks');
+            
+            // Genera 10 espressioni diverse
+            for (let i = 1; i <= 10; i++) {
+                const taskDiv = document.createElement('div');
+               
